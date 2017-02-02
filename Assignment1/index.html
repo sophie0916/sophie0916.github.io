@@ -1,0 +1,121 @@
+<script src=lib.js></script>
+
+<body bgcolor=black text=white>
+  <center>
+    <canvas id='canvas1' width=600 height=600></canvas>
+  </center>
+</body>
+
+<script id='vs_script' type='x-shader/x-vertex'>
+
+// YOU PROBABLY WON'T NEED TO CHANGE THE VERTEX SHADER FOR NOW.
+
+attribute vec3 aPos;
+varying   vec3 vPos;
+void main() {
+  gl_Position = vec4(aPos, 1.0);  // Set position of vertex in image.
+  vPos = aPos;                    // Copy pos to a varying variable to
+}                                  //   interpolate it across pixels.
+</script>
+
+<script id='fs_script' type='x-shader/x-fragment'>
+
+
+varying vec3 vPos;                               // Position in image
+uniform float uTime;                             // Time
+float D(float x, float y, float r) {             // Make a disk shape
+  float b = .05 - (x * x + y * y) / (r * r);
+  return b > 0. ? 1. : 0.;
+}
+
+void main() {
+  float x = vPos.x;                             // x and y coords of
+  float y = vPos.y;                             // position in image
+  float a = vPos.x;
+  float b = vPos.y;
+
+  float e = vPos.x;
+  float f = vPos.y;
+
+  float g = vPos.x;
+  float h = vPos.y;
+
+  vec3 c = vec3(.7,.1,.5);                    // Blue sky.
+  c = mix(vec3(.045,.02,.02), c, .5+.5*y);      // Sky color gradient
+
+
+  for (int i = 0; i < 8; i++){
+    float d = D(x , y, .3);
+    x-=.5*sin(uTime);
+    y+=.5*cos(uTime);
+    if (i <= 5){
+      y*= -1.;
+    }
+    if (i > 5){
+      x*= -2.5;
+    }
+    if (d > 0.){
+      c *= 1.2;
+    }
+  }
+
+  for (int i = 0; i < 8; i++){
+    float d = D(a , b, .3);
+    a+=.5*sin(uTime);
+    b+=.5*cos(uTime);
+    if (i <= 5){
+      a*= -1.;
+    }
+    if (i > 5){
+      b*= -2.5;
+    }
+    if (d > 0.){
+      c *= 1.7;
+    }
+  }
+
+
+  for (int i = 0; i < 8; i++){
+    float d = D(e , f, .3);
+    e+=.5*sin(uTime);
+    f-=.5*cos(uTime);
+    if (i <= 5){
+      f*= -1.;
+    }
+    if (i > 5){
+      e*= -2.5;
+    }
+
+    if (d > 0.){
+      c *= .2;
+    }
+  }
+  for (int i = 0; i < 8; i++){
+    float d = D(g , h, .3);
+    g-=.5*sin(uTime);
+    h-=.5*cos(uTime);
+    if (i <= 5){
+      g*= -1.;
+    }
+    if (i > 5){
+      h*= -2.5;
+    }
+    if (d > 0.){
+      c *= 2.7;
+    }
+  }
+
+  gl_FragColor = vec4(sqrt(c), 1.);             // Final pixel color
+}
+
+</script>
+
+<script>
+
+var vs = vs_script.innerHTML, fs = fs_script.innerHTML;
+
+addTextEditor(fs, function() { canvas1.setShaders(vs, this.value); });
+
+gl_start(canvas1, vs, fs);
+
+</script>
