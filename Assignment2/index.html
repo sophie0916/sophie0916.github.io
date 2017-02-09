@@ -215,26 +215,25 @@ vec2 raytraceSphere(vec3 V, vec3 W, vec4 S) {
 }
 
 void main() {
-  vec3 c = mix(vec3(.245,.022,.102), vec3(.25,.12,.93), .5+.5*vPos.y);                   // Background
+  // Background
+  vec3 c = mix(vec3(.245,.022,.102), vec3(.25,.12,.93), .5+.5*vPos.y);
 
   vec3 V = vec3(0.,0.,0.);                      // Ray origin
   vec3 W = normalize(vec3(vPos.xy, -3.));       // Ray direction
-  vec4 S = vec4(.5+.05*cos(uTime),.5+.05*sin(uTime),.5+5.*cos(uTime),.5*sin(.01*uTime));  // Animate sphere
+  // Animate sphere
+  vec4 S = vec4(.5+.05*cos(uTime),.5+.05*sin(uTime),.5+5.*cos(uTime),.5*sin(.01*uTime));
 
-  vec3 V1 = vec3(1.,2.,1.);                      // Ray origin
-  vec3 W1 = normalize(vec3(vPos.xy, 1.));       // Ray direction
-  vec4 S1 = vec4(.5+.05*sin(uTime),-.5+.05*cos(uTime),.5+5.*cos(uTime),.3*sin(.01*uTime));  // Animate sphere
-
+  vec3 V1 = vec3(1.,2.,1.);
+  vec3 W1 = normalize(vec3(vPos.xy, 1.));
+  vec4 S1 = vec4(.5+.05*sin(uTime),-.5+.05*cos(uTime),.5+5.*cos(uTime),.3*sin(.01*uTime));
 
   vec3 V2 = vec3(1.5,-.5,.5);                      // Ray origin
   vec3 W2 = normalize(vec3(vPos.xy, 1.));       // Ray direction
-  vec4 S2 = vec4(.5+.05*cos(uTime),.5+.05*sin(0.1*uTime),.5+5.*cos(0.7*uTime),.5*sin(.01*uTime));  // Animate sphere
-
-
+  vec4 S2 = vec4(.5+.05*cos(uTime),.5+.05*sin(0.1*uTime),.5+5.*cos(0.7*uTime),.5*sin(.01*uTime));
 
   vec3 V3 = vec3(-.5,1.5,.5);                      // Ray origin
   vec3 W3 = normalize(vec3(vPos.xy, 1.));       // Ray direction
-  vec4 S3 = vec4(1.5+.05*cos(uTime),1.5+.05*sin(0.3*uTime),.5+5.*cos(0.5*uTime),.5*sin(.01*uTime));  // Animate sphere
+  vec4 S3 = vec4(1.5+.05*cos(uTime),1.5+.05*sin(0.3*uTime),.5+5.*cos(0.5*uTime),.5*sin(.01*uTime));
 
   vec2 t = raytraceSphere(V, W, S);             // Ray trace sphere
   vec2 t1 = raytraceSphere(V1,W1,S1);
