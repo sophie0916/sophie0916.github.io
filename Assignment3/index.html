@@ -710,7 +710,7 @@ void main() {
       for (int bounce = 0 ; bounce < 5 ; bounce++) {
 	 c += phong(N, E, .1*C.rgb, .5*C.rgb, C);
 	 V = P + .001 * W;
-	 W = reflection(-W, N);
+	 W = vec3(.1,.1,.1);
          if (! raytrace()) {
             c += .05 * backgroundColor(W);
 	    break;
