@@ -111,7 +111,7 @@ bool raytrace() {
 
 void main() {
    vec3 c = vec3(0.,0.,0.);
-
+   c /= texture2(c);
    V = vec3(0.,0.,0.);                         // Ray origin
    W = normalize(vec3(vPos.xy, -3.));          // Ray direction
    if (! raytrace()){

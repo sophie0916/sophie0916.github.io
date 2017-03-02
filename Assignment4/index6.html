@@ -44,8 +44,8 @@ uniform Light uLights[NLIGHTS];                // All the lights.
 uniform Sphere uSpheres[NSPHERES];             // All the spheres.
 
 vec3 texture(vec3 v) {                              // Using turbulence
-   return sin(15. * v + vec3(10.,10.,10.) *
-                        turbulence(v + vec3(10., 10., .11 * uTime)));
+   return sin(15. * v + vec3(100.,100.,100.) *
+                        turbulence(v + vec3(10., 10., 10.11 * uTime)));
 }
 
 
