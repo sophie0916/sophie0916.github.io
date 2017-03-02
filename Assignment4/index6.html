@@ -51,7 +51,7 @@ vec3 texture(vec3 v) {                              // Using turbulence
 
 vec3 texture2(vec3 v) {                              // Using noise
    return cos(15. * v + vec3(10.,10.,10.) *
-                        noise(v + vec3(10., 10., .11 * uTime)));
+                        noise(v + vec3(0., 0., .11 * uTime)));
 }
 
 vec2 raytraceSphere(vec3 V, vec3 W, Sphere S) {
