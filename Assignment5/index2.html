@@ -4,7 +4,7 @@
 <td><canvas id=canvas1 width=500 height=300></td>
 <td width=50></td>
 <td>
-Hi, I am a sleepy bird.
+인형뽑기.
 </td>
 </tr>
 
@@ -38,9 +38,8 @@ Ferris Wheel.
       g.lineTo(0, 0);
       g.stroke();
 
-      g.beginPath();
-
       var angle = Math.sin(time);
+      var movingY = 150 + 100 * angle;
       var flapY = 50 * Math.sin(angle);
       var flapX = 50 * Math.cos(angle);
 
@@ -52,54 +51,27 @@ Ferris Wheel.
          y = this.height / 2;
       }
 
+      g.beginPath();
       g.moveTo(this.width/2, 0);
-      g.lineTo(this.width/2, 150 + 100 * angle);
+      g.lineTo(this.width/2, movingY);
       g.stroke();
-//      g.beginPath();
-//      g.moveTo(x-flapX, y-flapY);
-//      g.lineTo(x, y);
-//      g.lineTo(x+flapX, y-flapY);
-//      g.stroke();
-
-// last known position
-var pos = { x: 0, y: 0 };
-
-canvas1.addEventListener('mousemove', draw);
-canvas1.addEventListener('mousedown', setPosition);
-canvas1.addEventListener('mouseenter', setPosition);
-
-// new position from mouse event
-function setPosition(e) {
-  pos.x = e.clientX;
-  pos.y = e.clientY;
-}
-
-
-function draw(e) {
-  // mouse left button must be pressed
-  if (e.buttons !== 1) return;
-
-  g.beginPath(); // begin
-
-  g.lineWidth = 5;
-  g.lineCap = 'round';
-  g.strokeStyle = '#c0392b';
-
-  g.moveTo(pos.x, pos.y); // from
-  setPosition(e);
-  g.lineTo(pos.x, pos.y); // to
-
-  g.stroke(); // draw it!
-}
+      g.beginPath();
+      g.moveTo(x-flapX, movingY+flapY);
+      g.lineTo(x, movingY);
+      g.lineTo(x+flapX, movingY+flapY);
+      g.stroke();
 
    }
 
    canvas2.update = function(g) {
 
-      g.fillStyle = '#000000';
+      g.fillStyle = '#000030';
       g.fillRect(0, 0, this.width, this.height);
-      g.lineWidth = 2;
-      g.strokeStyle = '#ffffff';
+      g.lineWidth = 3;
+      //how do I have the color changing constantly?
+      var col = 255*Math.sin(time);
+      //g.strokeStyle = 'rgb(' + col + ',' + col + ',' + col + ')';
+      g.strokeStyle = 'rgb(255, 255, 255)';
 
       var x = this.width/2;
       var y = this.height/2;
@@ -118,8 +90,8 @@ function draw(e) {
       var balls = [];
       for(var i = 0; i < 32; i++) {
         var ball = {
-          angleX : Math.cos(11.25*i/180*Math.PI * time),
-          angleY : Math.sin(11.25*i/180*Math.PI * time),
+          angleX : Math.cos(11.25*i/180*Math.PI),
+          angleY : Math.sin(11.25*i/180*Math.PI),
           x: 350 + 275 * this.angleX,
           y: 350 + 275 * this.angleY
         }
@@ -131,15 +103,22 @@ function draw(e) {
       var r4 = {x : 350 + r[3] * balls[31].angleX, y : 350 + r[3] * balls[31].angleY};
       var r5 = {x : 350 + r[4] * balls[31].angleX, y : 350 + r[4] * balls[31].angleY};
       //account for first case
-      var curr = {x: 350 + 275 * balls[0].angleX, y: 350 + 275 * balls[0].angleY};
+      var curr = {x: 0, y: 0};
+      var curr2 = {x: 0, y: 0};
 
-      for(var i = 0; i < 32; i++) {
+      for(var i = 0; i < balls.length; i++) {
 
-        curr.x = balls[i].x;
-        curr.y = balls[i].y;
+        g.lineWidth = 1;
+        curr.x = 350 + 275 * balls[i].angleX;
+        curr.y = 350 + 275 * balls[i].angleY;
+        g.strokeStyle = '#ffff00';
         g.beginPath();
-        g.arc(r5.x, r5.y, 10, 0, 2 * Math.PI);
+        g.arc(curr.x, curr.y, 10, 0, 2 * Math.PI);
+        g.fillStyle = 'rgb(255, 255, 255)';
+        g.fill();
         g.stroke();
+
+        g.strokeStyle = 'rgb(255, 255, 255)';
 
         if (i % 2 == 0){
           r2.x = 350 + r[1] * balls[i].angleX;
@@ -176,6 +155,11 @@ function draw(e) {
         r5.x = 350 + r[4] * balls[i].angleX;
         r5.y = 350 + r[4] * balls[i].angleY;
 
+
+        curr2.x = 350 + 265 * balls[i].angleX;
+        curr2.y = 350 + 265 * balls[i].angleY;
+
+        //g.lineWidth = 2;
         g.beginPath();
         g.moveTo(350,350);
         g.lineTo(r2.x, r2.y);
@@ -183,10 +167,37 @@ function draw(e) {
         //insert octagon here
         g.beginPath();
         g.moveTo(r3.x, r3.y);
-        g.lineTo(r5.x, r5.y);
+        g.lineTo(curr2.x, curr2.y);
         g.stroke();
       }
+      g.lineWidth = 12;
+      g.beginPath();
+      g.moveTo(350, 350);
+      g.lineTo(350, 670);
+      g.moveTo(350, 350);
+      g.lineTo(350 + 330 * Math.cos(75/180*Math.PI), 350 + 330 * Math.sin(75/180*Math.PI));
+      //g.lineWidth = 5;
+      //g.lineTo(350 + 200 * Math.cos(105/180*Math.PI), 350 + 200 * Math.sin(105/180*Math.PI));
+      g.moveTo(350, 350);
+      //g.lineWidth = 9;
+      g.lineTo(350 + 330 * Math.cos(105/180*Math.PI), 350 + 330 * Math.sin(105/180*Math.PI));
+      //g.lineWidth = 5;
+      //g.lineTo(350 + 200 * Math.cos(75/180*Math.PI), 350 + 200 * Math.sin(75/180*Math.PI));
+      //g.lineTo(350 + 200 * Math.cos(105/180*Math.PI), 350 + 200 * Math.sin(105/180*Math.PI));
 
+      g.stroke();
+      g.lineWidth = 5;
+      g.beginPath();
+      g.moveTo(350 + 330 * Math.cos(75/180*Math.PI), 350 + 330 * Math.sin(75/180*Math.PI));
+      g.lineTo(350 + 200 * Math.cos(105/180*Math.PI), 350 + 200 * Math.sin(105/180*Math.PI));
+      g.moveTo(350 + 330 * Math.cos(105/180*Math.PI), 350 + 330 * Math.sin(105/180*Math.PI));
+      g.lineTo(350 + 200 * Math.cos(75/180*Math.PI), 350 + 200 * Math.sin(75/180*Math.PI));
+      g.lineTo(350 + 200 * Math.cos(105/180*Math.PI), 350 + 200 * Math.sin(105/180*Math.PI));
+
+      g.lineTo(350 + 100 * Math.cos(75/180*Math.PI), 350 + 100 * Math.sin(75/180*Math.PI));
+      g.lineTo(350 + 100 * Math.cos(105/180*Math.PI), 350 + 100 * Math.sin(105/180*Math.PI));
+      g.lineTo(350 + 200 * Math.cos(75/180*Math.PI), 350 + 200 * Math.sin(75/180*Math.PI));
+      g.stroke();
    }
 
    draw2DCanvases([ canvas1, canvas2 ]);
