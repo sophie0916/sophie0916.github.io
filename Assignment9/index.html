@@ -1,0 +1,293 @@
+
+<table>
+
+<tr>
+<td><canvas id=canvas1 width=600 height=400></td>
+
+<td width=50></td>
+<td valign=top>
+<big><b>
+Example of Bspline curve
+</b></big>
+<p>
+Some ways this could be extended:
+<ul>
+<li>Click midpoint between two key points to insert a new key point.
+<li>Click on a key point to delete it.
+<li>Toggle between open and closed curve.
+<li>Toggle curve appearance: stroke or fill or both in different colors.
+<li>Toggle key points between visible and invisible.
+<li>Support multiple curves.
+<li>Use multiple bsplines to create your own font.
+<li>Build a font designer.
+<li>Use multiple bsplines to make an animated face.
+<br><br><button type="submit" id="toggleOpen">Click for open/closed curve</button>
+<br><button type="submit" id="toggleShowKey">Click to show/hide key points</button>
+<br><button type="submit" id="toggleShowLine">Click to show/hide lines</button>
+<br><button type="submit" id="changeColor">Click to change color</button>
+<br><button type="submit" id="moveOrDelete">Click to move/delete key points</button>
+
+</ul>
+</td>
+</tr>
+
+</table>
+
+<script src=drawlib2.js></script>
+<script src=M.js></script>
+<script src=S.js></script>
+<script>
+   var m = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
+
+   // Matrix that transforms from [P0,P1,P2,P3] values to cubic coefficients [a,b,c,d].
+
+   var Bspline = [ -1/6,  3/6, -3/6,  1/6,  // a,b,c,d cubic coefficients from P0
+                    3/6, -6/6,    0,  4/6,  // a,b,c,d cubic coefficients from P1
+                   -3/6,  3/6,  3/6,  1/6,  // a,b,c,d cubic coefficients from P2
+                    1/6,    0,    0,    0   // a,b,c,d cubic coefficients from P3
+		 ];
+
+   // Given cubic coefficients [a,b,c,d], evaluate cubic polynomial at t.
+
+   function cubic(A, t) { return A[0] * t*t*t + A[1] * t*t + A[2] * t + A[3]; }
+
+   // Initial values for the key points.  The user can change them interactively.
+
+   var P = [
+             [ -.6, -.5,  0],
+             [ -.2,  .5,  0],
+             [  .2, -.4,  0],
+             [  .6, -.2,  0],
+             [  .8, -.5,  0],
+           ];
+
+               // Allow for toggling between an open / closed curve.
+
+
+    var fillColor ='rgb(244,194,194)';
+
+    let openCurve = false;
+    let visibleKey = true;
+    let visibleLine = true;
+    let movePoint = true;
+
+    var openCurveButton = document.querySelector('#toggleOpen');
+    var visibleKeyButton = document.querySelector('#toggleShowKey');
+    var visibleLineButton = document.querySelector('#toggleShowLine');
+    var changeColor = document.querySelector('#changeColor');
+    var moveOrDelete = document.querySelector('#moveOrDelete');
+
+    openCurveButton.addEventListener('click', function() {
+        openCurve = (openCurve !== true);
+    });
+
+    visibleKeyButton.addEventListener('click', function() {
+        visibleKey = (visibleKey !== true);
+    });
+
+    visibleLineButton.addEventListener('click', function() {
+        visibleLine = (visibleLine !== true);
+    });
+
+    changeColor.addEventListener('click', function() {
+      let r = Math.floor(Math.random() * 128) + 127,
+          g = Math.floor(Math.random() * 128) + 127,
+          b = Math.floor(Math.random() * 128) + 127;
+      fillColor = 'rgb('+r+','+g+','+b+')';
+    });
+
+    moveOrDelete.addEventListener('click', function() {
+        movePoint = (movePoint !== true);
+    });
+
+
+   canvas1.update = function(g) {
+      g.lineCap = 'round';
+      g.lineJoin = 'round';
+      g.lineWidth = 1;
+
+      // OUTLINE THE CANVAS
+
+      g.strokeStyle = 'black';
+      g.beginPath();
+      g.moveTo(0,0);
+      g.lineTo(this.width,0);
+      g.lineTo(this.width,this.height);
+      g.lineTo(0,this.height);
+      g.lineTo(0,0);
+      g.stroke();
+
+      // DRAW THE SCENE
+
+      M.identity(m);
+      M.save(m);
+         var curves = [], curve, n, n1, newSpot, t;
+
+	 // Compute the cursor.
+	 // Note: This will not yet work in the general case, because
+	 //       after converting from pixels, we need to undo perspective
+	 //       and then transform by the inverse of matrix m.
+
+         var cx = (this.cursor.x - this.width /2) /  (this.width/2);
+         var cy = (this.cursor.y - this.height/2) / -(this.width/2);
+
+	 // When mouse is button is down, select a key point if cursor gets near it.
+
+         var pressedX;
+         var pressedY;
+
+         var onSpot = false;
+         var createSpot = false;
+         var saveIndex;
+         var isDone = false;
+
+         if (this.cursor.z) {
+
+
+            if (this.n === undefined) {
+               for (n = 0 ; n < P.length ; n++) {
+                  let dx = P[n][0] - cx,
+                      dy = P[n][1] - cy;
+                  if (dx * dx + dy * dy < 0.05 * 0.05) {
+                     this.n = n;
+                    //  console.log(this.n);
+                     onSpot = true;
+                     saveIndex = n;
+                     isDone = true;
+                     break;
+                  }
+               }
+             }
+             if (this.newSpot === undefined){
+
+               if (!onSpot) {
+                 for (var n1 = 0 ; n1 < P.length-1 ; n1++) {
+                  //  console.log(n);
+                   pressedX = this.cursor.x;
+                   pressedY = this.cursor.y;
+                   let x1 = P[n1][0],
+                       x2 = P[(n1+1) % P.length][0],
+                       y1 = P[n1][1],
+                       y2 = P[(n1+1) % P.length][1],
+                       m = (y2-y1)/(x2-x1),
+                       a = pressedY - m * pressedX;
+
+                   let dx = (x1+x2)/2 - cx,
+                       dy = (y1+y2)/2 - cy;
+                   if (dx * dx + dy * dy < 0.1 * 0.1) {
+                     this.newSpot = n1+1;
+                      pressedX = cx;
+                      pressedY = cy;
+                      break;
+                   }
+                 }
+               }
+             }
+         }
+
+	 // When mouse button is up, no key point is selected.
+
+         else{
+              delete this.n;
+              delete this.newSpot;
+         }
+
+         // If a key point is selected,
+         if (this.n !== undefined) {
+           //if move mode, move it to the cursor location.
+           if (movePoint){
+             P[this.n][0] = cx;
+             P[this.n][1] = cy;
+           }
+            //if delete mode, remove it
+             else{
+               if (pressedX == this.cursor.x && pressedY == this.cursor.y)
+                P.splice(this.n, 1)
+             }
+             onSpot = false;
+         }
+
+         //create a new point
+         else if (!onSpot && this.newSpot !== undefined) {
+           P.splice(this.newSpot, 0, [pressedX, pressedY, 0]);
+            delete this.newSpot;
+         }
+
+
+
+
+	 // Draw the set of bsplines as a single filled curve.
+
+         curve = [];
+
+           if (openCurve){
+             for (n = 0 ; n < P.length-3 ; n++) {
+             var X = M.transform(Bspline, [ P[n][0], P[n+1][0], P[n+2][0], P[n+3][0] ]);
+             var Y = M.transform(Bspline, [ P[n][1], P[n+1][1], P[n+2][1], P[n+3][1] ]);
+             var Z = M.transform(Bspline, [ P[n][2], P[n+1][2], P[n+2][2], P[n+3][2] ]);
+             for (t = 0 ; t < 1.0001 ; t += 1/20)
+                curve.push( [ cubic(X, t), cubic(Y, t), cubic(Z, t) ] );
+                this.drawCurves(m, [ curve ]);
+              }
+           }
+           else{
+             for (n = 0 ; n < P.length ; n++) {
+             let nm = (n - 1 + P.length) % P.length,
+       	        n1 = (n + 1           ) % P.length,
+       	        n2 = (n + 2           ) % P.length,
+                       X = M.transform(Bspline, [ P[nm][0], P[n][0], P[n1][0], P[n2][0] ]),
+                       Y = M.transform(Bspline, [ P[nm][1], P[n][1], P[n1][1], P[n2][1] ]),
+                       Z = M.transform(Bspline, [ P[nm][2], P[n][2], P[n1][2], P[n2][2] ]);
+                       for (t = 0 ; t < 1.0001 ; t += 1/20)
+                          curve.push( [ cubic(X, t), cubic(Y, t), cubic(Z, t) ] );
+                          g.fillStyle = fillColor;
+                          this.drawCurves(m, [ curve ], true);
+           }
+         }
+
+
+	 // Draw the key points as small disks.
+         if (visibleKey) {
+           curves = [];
+           for (n = 0 ; n < P.length ; n++) {
+              curve = [];
+              for (t = 0 ; t < 2 * Math.PI ; t += 1/10)
+                 curve.push([P[n][0] + .015 * Math.cos(t),
+                             P[n][1] + .015 * Math.sin(t), 0]);
+              curves.push(curve);
+           }
+           g.fillStyle = 'blue';
+           this.drawCurves(m, curves, true);
+         }
+
+
+	 // Draw lines between successive key points.
+
+   if (visibleLine){
+     curves = [];
+           for (n = 0 ; n < P.length ; n++){
+             if (n == P.length-1){
+               if(openCurve) break;
+             }
+             curves.push([ P[n], P[(n+1) % P.length] ]);
+
+           }
+           g.strokeStyle = 'blue';
+           this.drawCurves(m, curves );
+
+   }
+
+
+	 // Draw the cursor as red crosshairs.
+
+         curves = [];
+         curves.push([ [cx-.1, cy], [cx+.1, cy] ]);
+         curves.push([ [cx, cy-.1], [cx, cy+.1] ]);
+         g.strokeStyle = 'red';
+         this.drawCurves(m, curves );
+
+      M.restore(m);
+   }
+
+   drawCanvases([canvas1]);
+</script>

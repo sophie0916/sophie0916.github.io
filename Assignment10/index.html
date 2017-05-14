@@ -1,0 +1,150 @@
+<script src=M.js></script>
+<script src=S.js></script>
+<script src=lib2f.js></script>
+
+<body bgcolor=black text=white>
+<center>
+<canvas id='canvas1' width=600 height=600></canvas>
+</center>
+</body>
+
+<script id='vs_script' type='x-shader/x-vertex'>
+   attribute vec3 aPos, aNor;
+   varying   vec3 vPos, vNor;
+   uniform   mat4 matrix;
+   void main() {
+      vec4 pos = matrix * vec4(aPos, 1.);
+      gl_Position = pos;
+      vPos = pos.xyz;
+      vNor = aNor;
+   }
+</script>
+
+<script id='fs_script' type='x-shader/x-fragment'>
+varying vec3 vPos, vNor;
+uniform float uTime;
+void main() {
+   vec3 normal = normalize(vNor);
+   vec3 c = normal;
+
+
+   vec3 L = normalize(vec3(1,0,0));
+   vec3 R = 2. * normal * dot(normal, L) - L;
+
+   vec3 d = vec3(1.3, 1.1, 35.3);
+   vec3 E = normalize(-L);
+
+   float s = pow(max(0., dot(E, R)), 10.);    // Specular value
+   c = vec3(.01, .1, .01);                    // Ambient color
+   c += d * vec3(.05, .5, .05);               // Diffuse color
+   c += s * vec3(.5,.5,.5);                   // Specular color
+
+
+   gl_FragColor = vec4(sqrt(c), 1.);
+}
+</script>
+
+<script>
+
+var m = M.identityMatrix();
+
+var vs = vs_script.innerHTML, fs = fs_script.innerHTML;
+
+addTextEditor(fs, function() { canvas1.setShaders(vs, this.value); });
+
+var obj1, obj2, obj3;
+
+gl_start(canvas1, vs, fs,
+   function(time) {
+      M.identity(m);
+      M.rotateY(m, time);
+
+      M.save(m);
+         obj1.setMatrix(m);
+      M.restore(m);
+
+
+      // M.save(m);
+      //    obj3.setMatrix(m);
+      // M.restore(m);
+   }
+);
+   var scene = new Scene();
+
+   var objectRef1 = S.parametricMesh(S.sphere, 30, 30);
+   var objectRef2 = S.parametricMesh(S.sphere, 30, 30);
+   var objectRef3 = [
+      [[0.5,0.5,0.5],[0.5,-0.5,0.5],[-0.5,-0.5,0.5],[-0.5,0.5,0.5]],
+      [[0.5,0.5,0.5],[-0.5,0.5,0.5],[-0.5,-0.5,0.5],[0.5,-0.5,0.5]],
+      [[ 0.5,0.5,0.5],[0.5,0.5,-0.5],[-0.5,0.5,-0.5],[ -0.5,0.5,0.5]],
+      [[ 0.5,-0.5,0.5],[-0.5,-0.5,0.5],[-0.5,-0.5,-0.5],[ 0.5,-0.5,-0.5]],
+      [[0.5,0.5,0.5],[0.5, 0.5,-0.5],[0.5,-0.5,-0.5],[0.5,-0.5,0.5]],
+      [[-0.5,0.5,0.5],[-0.5, -0.5,0.5],[-0.5,-0.5,-0.5],[-0.5,0.5,-0.5]], ];
+
+   var v1 = [];
+   var v2 = [];
+   var v3 = [];
+
+   for (var i = 0; i < objectRef1.length; i++) {
+     for (var j = 0; j < objectRef1[i].length; j++) {
+       v1.push(objectRef1[i][j][0]);
+       v1.push(objectRef1[i][j][1]);
+       v1.push(objectRef1[i][j][2]);
+     }
+   }
+
+   for (var i = 0; i < objectRef2.length; i++) {
+     for (var j = 0; j < objectRef2[i].length; j++) {
+       v2.push(objectRef2[i][j][0]);
+       v2.push(objectRef2[i][j][1]);
+       v2.push(objectRef2[i][j][2]);
+     }
+   }
+   //
+  //   for (var i = 0; i < objectRef3.length; i++) {
+  //     for (var j = 0; j < objectRef3[i].length; j++) {
+  //       v3.push(objectRef3[i][j][0]);
+  //       v3.push(objectRef3[i][j][1]);
+  //       v3.push(objectRef3[i][j][2]);
+  //     }
+  //   }
+
+
+   obj1 = new SceneObject();
+  //  obj2 = new SceneObject();
+  //  obj3 = new SceneObject();
+
+
+  obj1.setVertices(v1);
+  // obj2.setVertices(v1);
+  // obj3.setVertices(v3);
+
+  //  obj1.setVertices([
+  //     -.3,-.3, 0,  0,0,1,
+  //      .3,-.3, 0,  0,0,1,
+  //      .3, .3, 0,  0,0,1,
+   //
+  //      .3, .3, 0,  0,0,1,
+  //     -.3, .3, 0,  0,0,1,
+  //     -.3,-.3, 0,  0,0,1,
+  //  ]);
+   scene.addObject(obj1);
+  //  scene.addObject(obj2);
+  //  scene.addObject(obj3);
+
+
+  //  obj2.setVertices([
+  //     -.2,-.2,-.3,  -1,0,.1,
+  //      .4,-.2, .3,  -1,0,.1,
+  //      .4, .4, .3,  -1,0,.1,
+   //
+  //      .4, .4, .3,  -1,0,.1,
+  //     -.2, .4,-.3,  -1,0,.1,
+  //     -.2,-.2,-.3,  -1,0,.1,
+  //  ]);
+  //  scene.addObject(obj2);
+
+   canvas1.scene = scene;
+
+
+</script>
