@@ -2,3 +2,13 @@ body {
   background-color: black;
   color: white;
 }
+#d1 {
+  width: 50%;
+  text-align: center;
+}
+
+#caption {
+  width: 50%;
+  text-align: center;
+  font-size: 1.5em;
+}
