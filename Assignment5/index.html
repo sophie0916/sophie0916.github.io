@@ -1,36 +1,37 @@
-<table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
 
-<tr>
-<td><canvas id=canvas1 width=700 height=700></td>
-<td width=50></td>
-<td>
-Ferris Wheel.
-</td>
-</tr>
+    <title>Parametric Surfaces</title>
+    <link rel="stylesheet" href="styles/main.css">
 
-<tr>
-<td><canvas id=canvas2 width=700 height=700></td>
-<td width=50></td>
-<td>
-A little spin added to the Ferris Wheel.
-</td>
-</tr>
+  </head>
 
-<tr>
-<td><canvas id=canvas3 width=700 height=700></td>
-<td width=50></td>
-<td>
-Let's have that spin in 3D, shall we?
-</td>
-</tr>
+  <body style="background-color:#000035;">
+    <div id = "index1">
+      <table>
 
-</table>
+        <tr>
+          <td id = "d1"><canvas id=canvas1 width=700 height=700></td>
+        </tr>
+        <tr>
+          <td class = "caption">
+          Ferris Wheel.<br><a href="index2.html" class = "link"><p class = "link">&rarr; Click here to add spin</p></a>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </body>
+</html>
+
 
 <script src=drawlib1.js></script>
 <script>
    canvas1.update = function(g) {
 
-           g.fillStyle = '#000030';
+           g.fillStyle = '#000035';
            g.fillRect(0, 0, this.width, this.height);
            g.lineWidth = 3;
            g.strokeStyle = 'rgb(255, 255, 255)';
@@ -156,196 +157,8 @@ Let's have that spin in 3D, shall we?
            g.stroke();
    }
 
-   canvas2.update = function(g) {
-
-      g.fillStyle = '#000000';
-      g.fillRect(0, 0, this.width, this.height);
-      g.lineWidth = 2;
-
-      g.strokeStyle = 'rgb(100, 100, 100)';
-
-      var x = this.width/2;
-      var y = this.height/2;
-
-      //ferris wheel circle
-      //g.arc(75, 75, 50, 0, 2 * Math.PI);
-      //.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-      var r = [40, 85, 130, 200, 250];
-
-      for (var i = 0; i < 5; i++) {
-        g.beginPath();
-        g.arc(x, y, r[i], 0, 2 * Math.PI);
-        g.stroke();
-      }
-
-      var balls = [];
-      for(var i = 0; i < 32; i++) {
-        var ball = {
-          angleX : Math.cos(11.25*i/180*Math.PI * time/3),
-          angleY : Math.sin(11.25*i/180*Math.PI * time/3),
-          x: 350 + 275 * this.angleX,
-          y: 350 + 275 * this.angleY
-        }
-        balls.push(ball);
-      }
-
-      var r2 = {x : 0, y : 0};
-      var r3 = {prevX : 350 + r[2] * balls[31].angleX, prevY : 350 + r[2] * balls[31].angleY, x: 0, y: 0};
-      var r4 = {x : 350 + r[3] * balls[31].angleX, y : 350 + r[3] * balls[31].angleY};
-      var r5 = {x : 350 + r[4] * balls[31].angleX, y : 350 + r[4] * balls[31].angleY};
-      //account for first case
-      var curr = {x: 350 + 275 * balls[0].angleX, y: 350 + 275 * balls[0].angleY};
-
-      for(var i = 0; i < 32; i++) {
-
-        curr.x = balls[i].x;
-        curr.y = balls[i].y;
-        g.beginPath();
-        g.arc(r5.x, r5.y, 10, 0, 2 * Math.PI);
-        g.stroke();
-
-        if (i % 2 == 0){
-          r2.x = 350 + r[1] * balls[i].angleX;
-          r2.y = 350 + r[1] * balls[i].angleY;
-          g.beginPath();
-          g.moveTo(r3.prevX, r3.prevY);
-          g.lineTo(r2.x, r2.y);
-          g.stroke();
-        }
-        else {
-          r3.prevX = 350 + r[2] * balls[i].angleX;
-          r3.prevY = 350 + r[2] * balls[i].angleY;
-          g.beginPath();
-          g.moveTo(r2.x, r2.y);
-          g.lineTo(r3.prevX, r3.prevY);
-          g.lineTo(r2.x, r2.y);
-          g.lineTo(r3.x, r3.y);
-          g.stroke();
-        }
-
-        g.beginPath();
-        g.moveTo(r4.x, r4.y);
-        g.lineTo(350 + r[4] * balls[i].angleX, 350 + r[4] * balls[i].angleY);
-        g.stroke();
-        g.beginPath();
-        g.moveTo(r5.x, r5.y);
-        g.lineTo(350 + r[3] * balls[i].angleX, 350 + r[3] * balls[i].angleY);
-        g.stroke();
-
-        r3.x = 350 + r[2] * balls[i].angleX;
-        r3.y = 350 + r[2] * balls[i].angleY;
-        r4.x = 350 + r[3] * balls[i].angleX;
-        r4.y = 350 + r[3] * balls[i].angleY;
-        r5.x = 350 + r[4] * balls[i].angleX;
-        r5.y = 350 + r[4] * balls[i].angleY;
-
-        g.beginPath();
-        g.moveTo(350,350);
-        g.lineTo(r2.x, r2.y);
-        g.stroke();
-        g.beginPath();
-        g.moveTo(r3.x, r3.y);
-        g.lineTo(r5.x, r5.y);
-        g.stroke();
-      }
-
-   }
 
 
-   canvas3.update = function(g) {
-     g.fillStyle = '#000000';
-     g.fillRect(0, 0, this.width, this.height);
-     g.lineWidth = 2;
 
-
-     g.strokeStyle = 'rgb(100, 100, 100)';
-
-     var x = this.width/2;
-     var y = this.height/2;
-
-     //ferris wheel circle
-     //g.arc(75, 75, 50, 0, 2 * Math.PI);
-     //.arc(x, y, radius, startAngle, endAngle, anticlockwise);
-     var r = [40, 85, 130, 200, 250];
-
-     for (var i = 0; i < 5; i++) {
-       g.beginPath();
-       g.arc(x, y, r[i], 0, 2 * Math.PI);
-       g.stroke();
-     }
-
-     var balls = [];
-     for(var i = 0; i < 32; i++) {
-       var ball = {
-         angleX : Math.cos(11.25*i/180*Math.PI * time/3),
-         angleY : Math.sin(11.25*i/180*Math.PI),
-         x: 350 + 275 * this.angleX,
-         y: 350 + 275 * this.angleY
-       }
-       balls.push(ball);
-     }
-
-     var r2 = {x : 0, y : 0};
-     var r3 = {prevX : 350 + r[2] * balls[31].angleX, prevY : 350 + r[2] * balls[31].angleY, x: 0, y: 0};
-     var r4 = {x : 350 + r[3] * balls[31].angleX, y : 350 + r[3] * balls[31].angleY};
-     var r5 = {x : 350 + r[4] * balls[31].angleX, y : 350 + r[4] * balls[31].angleY};
-     //account for first case
-     var curr = {x: 350 + 275 * balls[0].angleX, y: 350 + 275 * balls[0].angleY};
-
-     for(var i = 0; i < 32; i++) {
-
-       curr.x = balls[i].x;
-       curr.y = balls[i].y;
-       g.beginPath();
-       g.arc(r5.x, r5.y, 10, 0, 2 * Math.PI);
-       g.stroke();
-
-       if (i % 2 == 0){
-         r2.x = 350 + r[1] * balls[i].angleX;
-         r2.y = 350 + r[1] * balls[i].angleY;
-         g.beginPath();
-         g.moveTo(r3.prevX, r3.prevY);
-         g.lineTo(r2.x, r2.y);
-         g.stroke();
-       }
-       else {
-         r3.prevX = 350 + r[2] * balls[i].angleX;
-         r3.prevY = 350 + r[2] * balls[i].angleY;
-         g.beginPath();
-         g.moveTo(r2.x, r2.y);
-         g.lineTo(r3.prevX, r3.prevY);
-         g.lineTo(r2.x, r2.y);
-         g.lineTo(r3.x, r3.y);
-         g.stroke();
-       }
-
-       g.beginPath();
-       g.moveTo(r4.x, r4.y);
-       g.lineTo(350 + r[4] * balls[i].angleX, 350 + r[4] * balls[i].angleY);
-       g.stroke();
-       g.beginPath();
-       g.moveTo(r5.x, r5.y);
-       g.lineTo(350 + r[3] * balls[i].angleX, 350 + r[3] * balls[i].angleY);
-       g.stroke();
-
-       r3.x = 350 + r[2] * balls[i].angleX;
-       r3.y = 350 + r[2] * balls[i].angleY;
-       r4.x = 350 + r[3] * balls[i].angleX;
-       r4.y = 350 + r[3] * balls[i].angleY;
-       r5.x = 350 + r[4] * balls[i].angleX;
-       r5.y = 350 + r[4] * balls[i].angleY;
-
-       g.beginPath();
-       g.moveTo(350,350);
-       g.lineTo(r2.x, r2.y);
-       g.stroke();
-       g.beginPath();
-       g.moveTo(r3.x, r3.y);
-       g.lineTo(r5.x, r5.y);
-       g.stroke();
-     }
-
-   }
-
-   draw2DCanvases([ canvas1, canvas2, canvas3 ]);
+   draw2DCanvases([ canvas1 ]);
    </script>

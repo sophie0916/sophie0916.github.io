@@ -1,0 +1,30 @@
+#index1 {
+  background-color: #000035;
+  color: white;
+}
+
+#index2 {
+  background-color: black;
+  color: white;
+}
+
+body {
+  background-color: black;
+}
+
+#d1 {
+  width: 50%;
+  text-align: center;
+}
+
+.caption {
+  width: 50%;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.link, .link:visited, .link:active, .link:hover {
+  color: white;
+  text-decoration: none;
+  font-size: 0.8em;
+}
