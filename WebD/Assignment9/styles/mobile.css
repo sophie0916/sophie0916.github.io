@@ -142,7 +142,7 @@ ul.navi{
 }
 
 li.expand {
-  font-family: Mathlete, Times, sans-serif;
+  font-family: Lato, Times, sans-serif;
   font-size: 2.5em;
   letter-spacing: 0.12em;
   font-weight: bold;
@@ -150,7 +150,7 @@ li.expand {
 }
 
 li.nav {
-  font-family: Mathlete, Times, sans-serif;
+  font-family: Lato, Times, sans-serif;
   font-size: 1.2em;
   letter-spacing: 0.12em;
   font-weight: bold;
@@ -168,7 +168,7 @@ li{
 }
 
 h1 {
-  font-family: Amatic, Times, sans-serif;
+  font-family: Lato, Times, sans-serif;
   color: black;
   font-size: 3.0em;
   letter-spacing: 0.12em;
@@ -201,12 +201,12 @@ p{
 }
 
 a:link, a:visited {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
 a:focus {
-  color: gray;
+  color: white;
 }
 
 a:active {
