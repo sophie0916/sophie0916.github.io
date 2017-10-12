@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+@import "tablet.css";
+
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg1_body {
+    background-image: url('../images/newyork@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg2_body {
+    background-image: url('../images/new_mainpage@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg3_body {
+    background-image: url('../images/programming@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg4_body {
+    background-image: url('../images/keyboard@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg5_body {
+    background-image: url('../images/followthatdream@2x.png');
+  }
+}
+
+#title{
+  margin-left: 20%;
+
+}
+
+hr{
+  margin-left: 20%;
+}
+
+#navigation{
+  float: left;
+  width: 10%;
+  height: 100%;
+  margin-top: 20%;
+  margin-left: 5%;
+  margin-right: 5%;
+  position: fixed;
+}
+
+#content{
+  width: 80%;
+  float: left;
+  margin-left: 20%;
+}
+
+#content_programs{
+  width: 75%;
+  float: left;
+  margin-left: 20%;
+}
+
+li.nav{
+  font-size: 2.0em;
+  text-align: center;
+}
+
+h1 {
+  font-size: 4.0em;
+}
+
+a:link, a:visited {
+  color: white;
+  text-decoration: none;
+  text-shadow: 2px 2px grey;
+}
+
+a:focus, a:hover{
+  color: gray;
+}
+
+a:active {
+  color: black;
+
+}
+
+#footer{
+  margin-left: 20%;
+}

@@ -1,0 +1,114 @@
+%!Adobe-FontList 1.16
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:AmaticSC-Bold
+FamilyName:Amatic SC
+StyleName:Bold
+MenuName:Amatic SC
+StyleBits:2
+WeightClass:700
+WidthClass:5
+AngleClass:0
+FullName:Amatic SC Bold
+WritingScript:Roman
+OutlineFileName:\AmaticSC-Bold.ttf
+DataFormat:sfntData
+FileLength:37852
+FileModTime:1390874554
+NameArray:0,Mac,4,Amatic SC Bold
+NameArray:0,Win,1,Amatic SC
+NameArray:0,Win,16,Amatic SC
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Lato-Heavy
+FamilyName:Lato
+StyleName:Heavy
+MenuName:Lato Heavy
+StyleBits:0
+WeightClass:800
+WidthClass:5
+AngleClass:0
+FullName:Lato Heavy
+WritingScript:Roman
+OutlineFileName:\Lato-Heavy.ttf
+DataFormat:sfntData
+FileLength:665420
+FileModTime:1438878022
+NameArray:0,Mac,4,Lato Heavy
+NameArray:0,Win,1,Lato Heavy
+NameArray:0,Win,16,Lato
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Lato-Medium
+FamilyName:Lato
+StyleName:Medium
+MenuName:Lato Medium
+StyleBits:0
+WeightClass:500
+WidthClass:5
+AngleClass:0
+FullName:Lato Medium
+WritingScript:Roman
+OutlineFileName:\Lato-Medium.ttf
+DataFormat:sfntData
+FileLength:637068
+FileModTime:1438878022
+NameArray:0,Mac,4,Lato Medium
+NameArray:0,Win,1,Lato Medium
+NameArray:0,Win,16,Lato
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Lato-Regular
+FamilyName:Lato
+StyleName:Regular
+MenuName:Lato
+StyleBits:0
+WeightClass:400
+WidthClass:5
+AngleClass:0
+FullName:Lato Regular
+WritingScript:Roman
+OutlineFileName:\Lato-Regular.ttf
+DataFormat:sfntData
+FileLength:657212
+FileModTime:1438878022
+NameArray:0,Mac,4,Lato Regular
+NameArray:0,Win,1,Lato
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Type1
+FontName:Mathlete-Bulky
+FamilyName:Mathlete
+StyleName:Bulky
+MenuName:Mathlete Bulky
+StyleBits:0
+WeightClass:500
+WidthClass:5
+AngleClass:0
+FullName:Mathlete Bulky
+WritingScript:Roman
+OutlineFileName:\Mathlete-Bulky.otf
+DataFormat:sfntData
+UsesStandardEncoding:yes
+isCFF:yes
+FileLength:42868
+FileModTime:1370354988
+NameArray:0,Mac,4,Mathlete Bulky
+NameArray:0,Win,1,Mathlete Bulky
+NameArray:0,Win,16,Mathlete
+%EndFont
+

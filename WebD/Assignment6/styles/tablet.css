@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+@import "mobile.css";
+
+#navigation {
+  width: 90%;
+  margin: auto;
+
+}
+
+li.nav {
+  float: left;
+  margin-right: 30px;
+}
+
+.courant_building {
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+}
+
+.column1{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column2{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column3{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column4{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 70px;
+}
+
+#footer{
+  clear: both;
+}

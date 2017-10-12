@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+@import "mobile.css";
+
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg1_body {
+    background-image: url('../images/newyork@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg2_body {
+    background-image: url('../images/new_mainpage@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg3_body {
+    background-image: url('../images/programming@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg4_body {
+    background-image: url('../images/keyboard@2x.png');
+  }
+}
+
+@media (-webkit-min-device-pixe-ratio: 1.5), (min-resolution: 1.5dppx) {
+  #pg5_body {
+    background-image: url('../images/followthatdream@2x.png');
+  }
+}
+
+#navigation {
+  width: 90%;
+  margin: auto;
+
+}
+
+li.nav {
+  float: left;
+  margin-right: 30px;
+}
+
+.courant_building {
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+}
+
+.column1{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column2{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column3{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+
+.column4{
+  width: 35%;
+  float: left;
+  margin-left: 10%;
+  margin-bottom: 70px;
+}
+
+#footer{
+  clear: both;
+}
